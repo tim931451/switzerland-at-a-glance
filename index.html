@@ -851,30 +851,63 @@ function convertUnits(text) {
 // ============================================================
 
 function categorizeArticles(articles) {
+  // Fussball-Kontext-Keywords für Double-Check
+  const footballSignals = [
+    'fussball', 'fußball', 'champions league', 'europa league', 'conference league',
+    'super league', 'la liga', 'premier league', 'bundesliga', 'serie a', 'ligue 1',
+    'uefa', 'fifa', 'nations league', 'transfer', 'trainer', 'elfmeter', 'penalty',
+    'tor ', 'tore ', 'torschütz', 'torhüter', 'halbzeit', 'anpfiff', 'abpfiff',
+    'meisterschaft', 'pokal', 'cupfinal', 'derby', 'aufstieg', 'abstieg',
+    'tabelle', 'halbfinal', 'viertelfinal', 'achtelfinale', 'gruppenphase',
+    'nati', 'nationalmannschaft', 'länderspiel', 'fc ', 'fc-',
+    'barça', 'barca', 'barcelona', 'real madrid', 'bayern',
+    'young boys', 'yb ', 'servette', 'fcz', 'fc zürich', 'fc lugano',
+    'manchester', 'liverpool', 'arsenal', 'chelsea', 'juventus', 'psg', 'dortmund',
+    'mbappe', 'haaland', 'bellingham', 'vinicius', 'lewandowski', 'messi', 'ronaldo',
+    'xhaka', 'shaqiri', 'sommer', 'embolo', 'akanji', 'ndoye', 'yakin',
+    'lamine yamal', 'pedri', 'gavi', 'rotblau', 'st. jakob-park'
+  ];
+
+  function hasFootballContext(text) {
+    return footballSignals.filter(kw => text.includes(kw)).length >= 2;
+  }
+
   return articles.map(article => {
     const text = (article.title + ' ' + article.summary).toLowerCase();
     let bestCategory = 'allgemein';
     let bestScore = 0;
 
-    // Region bekommt Priorität – bei Match sofort zuweisen
+    // Region bekommt Priorität – ABER Fussball-Artikel ausschliessen!
+    // Ein Artikel wird nur Region, wenn er KEINE starke Fussball-Signatur hat
     const regionCat = CATEGORIES.region;
     let regionScore = 0;
     for (const kw of regionCat.keywords) {
       if (text.includes(kw)) regionScore++;
     }
-    if (regionScore > 0) {
+    if (regionScore > 0 && !hasFootballContext(text)) {
       return { ...article, category: 'region', relevanceScore: regionScore + 10 };
     }
 
-    // Alle Kategorien prüfen (inkl. wissen, das nicht in CATEGORY_ORDER ist)
+    // Alle Kategorien prüfen (inkl. wissen)
+    // Double-Check: Kategorie braucht mindestens 2 Keyword-Treffer ODER 1 sehr spezifisches
     const allCatKeys = [...CATEGORY_ORDER, 'wissen'];
     for (const key of allCatKeys) {
       if (key === 'allgemein' || key === 'region') continue;
       let score = 0;
+      const matchedKws = [];
       for (const kw of CATEGORIES[key].keywords) {
-        if (text.includes(kw)) score++;
+        if (text.includes(kw)) { score++; matchedKws.push(kw); }
       }
-      if (score > bestScore) { bestScore = score; bestCategory = key; }
+      // Double-Check: braucht min. 2 Treffer, oder 1 Treffer wenn das Keyword sehr spezifisch ist (>8 Zeichen)
+      const hasStrongMatch = matchedKws.some(kw => kw.length > 8);
+      if (score >= 2 || (score === 1 && hasStrongMatch)) {
+        if (score > bestScore) { bestScore = score; bestCategory = key; }
+      }
+    }
+
+    // Falls Region-Keywords gematcht aber Fussball war: trotzdem Region wenn kein besserer Match
+    if (regionScore > 0 && bestCategory === 'allgemein') {
+      return { ...article, category: 'region', relevanceScore: regionScore + 10 };
     }
 
     return { ...article, category: bestCategory, relevanceScore: bestScore };
@@ -1226,24 +1259,49 @@ const SPORT_SOURCES = [
 const SPORT_CATS = {
   nati: {
     label: 'Schweizer Nati',
-    required: ['nati', 'nationalmannschaft', 'a-nati', 'nati-team', 'länderspiel', 'laenderspiel',
+    // Nati braucht ENTWEDER ein starkes Nati-Keyword ODER (Spielername + Nati-Kontext)
+    // Das verhindert dass Klub-News fälschlich als Nati gelabelt werden
+    strongKeywords: ['nati', 'nationalmannschaft', 'a-nati', 'nati-team', 'länderspiel', 'laenderspiel',
       'em-quali', 'wm-quali', 'yakin', 'schweiz gegen', 'gegen die schweiz', 'schweiz spielt',
-      'schweiz trifft', 'schweizer nationalelf', 'sfv', 'schweizer auswahl',
-      'xhaka', 'shaqiri', 'sommer', 'embolo', 'akanji', 'ndoye', 'rieder', 'aebischer',
+      'schweiz trifft', 'schweizer nationalelf', 'sfv', 'schweizer auswahl'],
+    contextPlayers: ['xhaka', 'shaqiri', 'sommer', 'embolo', 'akanji', 'ndoye', 'rieder', 'aebischer',
       'kobel', 'elvedi', 'zakaria', 'zuber', 'okafor', 'steffen'],
+    natiContext: ['nati', 'nationalmannschaft', 'länderspiel', 'laenderspiel', 'schweiz',
+      'em-quali', 'wm-quali', 'yakin', 'sfv', 'nations league'],
+    customMatch: function(text) {
+      // Starkes Nati-Keyword allein reicht
+      const strongHits = this.strongKeywords.filter(kw => text.includes(kw)).length;
+      if (strongHits >= 1) return true;
+      // Spielername NUR wenn auch Nati-Kontext vorhanden (nicht nur Klub-News)
+      const hasPlayer = this.contextPlayers.some(p => text.includes(p));
+      const hasNatiCtx = this.natiContext.some(c => text.includes(c));
+      return hasPlayer && hasNatiCtx;
+    },
+    required: [], // wird nicht direkt genutzt, customMatch übernimmt
     max: 3
   },
   fcbasel: {
     label: 'FC Basel',
+    // Braucht expliziten FCB-Bezug, nicht bloss "Basel"
     required: ['fc basel', 'fcb 1893', 'rotblau', 'st. jakob-park', 'st. jakob park',
       'super league basel', 'fc basel 1893', 'bebbi'],
     max: 3
   },
   fcbarcelona: {
     label: 'FC Barcelona',
-    required: ['fc barcelona', 'barça', 'barca', 'camp nou', 'blaugrana',
-      'barcelona fc', 'lamine yamal', 'pedri', 'gavi', 'ter stegen',
-      'lewandowski barcelona', 'raphinha', 'hansi flick barcelona', 'la masia'],
+    // Starke Barcelona-Keywords + Spieler nur MIT Barcelona-Kontext
+    strongKeywords: ['fc barcelona', 'barça', 'barca', 'camp nou', 'blaugrana',
+      'barcelona fc', 'la masia', 'hansi flick barcelona'],
+    contextPlayers: ['lamine yamal', 'pedri', 'gavi', 'ter stegen', 'raphinha'],
+    barcelonaContext: ['barcelona', 'barça', 'barca', 'camp nou', 'blaugrana', 'la liga'],
+    customMatch: function(text) {
+      const strongHits = this.strongKeywords.filter(kw => text.includes(kw)).length;
+      if (strongHits >= 1) return true;
+      const hasPlayer = this.contextPlayers.some(p => text.includes(p));
+      const hasBarcaCtx = this.barcelonaContext.some(c => text.includes(c));
+      return hasPlayer && hasBarcaCtx;
+    },
+    required: [],
     max: 3
   },
   fussball: {
@@ -1305,7 +1363,9 @@ function isFootballArticle(text) {
     'xhaka', 'shaqiri', 'sommer', 'akanji', 'embolo', 'ndoye',
     'lamine yamal', 'pedri', 'gavi'
   ];
-  return footballContext.some(kw => text.includes(kw));
+  // Double-Check: braucht mindestens 2 Fussball-Signale, nicht bloss 1 Keyword
+  const hits = footballContext.filter(kw => text.includes(kw)).length;
+  return hits >= 2;
 }
 
 async function loadSport() {
@@ -1342,6 +1402,11 @@ async function loadSport() {
     const matching = sorted.filter(a => {
       if (used.has(a.title)) return false;
       const text = (a.title + ' ' + a.summary).toLowerCase();
+      // Custom-Match (Nati, Barcelona) hat Vorrang
+      if (typeof cat.customMatch === 'function') {
+        return cat.customMatch(text);
+      }
+      // Standard-Match mit minMatches (default 1)
       const matches = cat.required.filter(kw => text.includes(kw)).length;
       const needed = cat.minMatches || 1;
       return matches >= needed;
