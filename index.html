@@ -524,6 +524,7 @@ const MARKET_SYMBOLS = [
 
 let allArticles = [];
 let displayedArticles = [];
+let globalUsedTitles = new Set(); // GLOBAL: jeder Artikel nur EINMAL auf der ganzen Seite
 let activeFilter = 'alle';
 let lastRefreshTime = null;
 let refreshTimer = null;
@@ -851,53 +852,95 @@ function convertUnits(text) {
 // ============================================================
 
 function categorizeArticles(articles) {
-  // Fussball-Kontext-Keywords für Double-Check
-  const footballSignals = [
+  // ---- SPORT-ERKENNUNG (breit) ----
+  // Artikel die klar Sport sind, sollen NIE in Wirtschaft/Blaulicht/Welt etc. landen
+  const sportSignals = [
+    // Fussball
     'fussball', 'fußball', 'champions league', 'europa league', 'conference league',
     'super league', 'la liga', 'premier league', 'bundesliga', 'serie a', 'ligue 1',
-    'uefa', 'fifa', 'nations league', 'transfer', 'trainer', 'elfmeter', 'penalty',
+    'uefa', 'fifa', 'nations league', 'elfmeter', 'penalty',
     'tor ', 'tore ', 'torschütz', 'torhüter', 'halbzeit', 'anpfiff', 'abpfiff',
+    'traumtor', 'traumtore', 'eigentor', 'freistoss', 'eckball',
     'meisterschaft', 'pokal', 'cupfinal', 'derby', 'aufstieg', 'abstieg',
     'tabelle', 'halbfinal', 'viertelfinal', 'achtelfinale', 'gruppenphase',
+    'partie', 'unterliegt', 'besiegt', 'bezwingt', 'niederlage', 'sieg gegen',
+    'remis', 'unentschieden', 'verliert gegen', 'gewinnt gegen', 'spiel gegen',
     'nati', 'nationalmannschaft', 'länderspiel', 'fc ', 'fc-',
     'barça', 'barca', 'barcelona', 'real madrid', 'bayern',
     'young boys', 'yb ', 'servette', 'fcz', 'fc zürich', 'fc lugano',
     'manchester', 'liverpool', 'arsenal', 'chelsea', 'juventus', 'psg', 'dortmund',
     'mbappe', 'haaland', 'bellingham', 'vinicius', 'lewandowski', 'messi', 'ronaldo',
     'xhaka', 'shaqiri', 'sommer', 'embolo', 'akanji', 'ndoye', 'yakin',
-    'lamine yamal', 'pedri', 'gavi', 'rotblau', 'st. jakob-park'
+    'wirtz', 'musiala', 'sané', 'gnabry', 'müller',
+    'lamine yamal', 'pedri', 'gavi', 'rotblau', 'st. jakob-park',
+    // Tennis
+    'tennis', 'federer', 'nadal', 'djokovic', 'wimbledon', 'roland garros',
+    'atp', 'wta', 'grand slam', 'australian open',
+    // Golf
+    'golf', 'golfer', 'tiger woods', 'pga', 'masters tournament', 'birdie', 'eagle', 'bogey',
+    // Motorsport
+    'formel 1', 'formula 1', 'f1 ', 'verstappen', 'hamilton',
+    // Wintersport
+    'ski ', 'slalom', 'abfahrt', 'super-g', 'riesenslalom', 'weltcup ski',
+    // Andere
+    'eishockey', 'hockey', 'nhl', 'basketball', 'nba', 'boxen', 'mma', 'ufc'
   ];
 
-  function hasFootballContext(text) {
-    return footballSignals.filter(kw => text.includes(kw)).length >= 2;
+  function isSportArticle(text) {
+    return sportSignals.filter(kw => text.includes(kw)).length >= 2;
   }
+
+  function hasFootballContext(text) {
+    return sportSignals.filter(kw => text.includes(kw)).length >= 2;
+  }
+
+  // ---- BLAULICHT-Spezifisch: nur echte Polizei/Kriminal/Unfall-Meldungen ----
+  // Braucht EXPLIZITEN Polizei/Justiz/Notfall-Bezug, nicht bloss "Unfall" im Sport
+  const blaulichtStrong = [
+    'polizei', 'festnahme', 'verhaftet', 'anklage', 'staatsanwaltschaft',
+    'ermittlung', 'verdächtig', 'verdaechtig', 'kriminal', 'delikt', 'straftat',
+    'mord', 'überfall', 'ueberfall', 'diebstahl', 'betrug', 'messerattacke',
+    'schiesserei', 'blaulicht', 'feuerwehr', 'ambulanz', 'notfall',
+    'tödlich', 'toedlich', 'lebensgefahr', 'opfer', 'verbrechen'
+  ];
 
   return articles.map(article => {
     const text = (article.title + ' ' + article.summary).toLowerCase();
+    const titleLower = article.title.toLowerCase();
     let bestCategory = 'allgemein';
     let bestScore = 0;
+    const isSport = isSportArticle(text);
 
-    // Region bekommt Priorität – ABER Fussball-Artikel ausschliessen!
-    // Ein Artikel wird nur Region, wenn er KEINE starke Fussball-Signatur hat
+    // Region bekommt Priorität – ABER Sport-Artikel ausschliessen!
     const regionCat = CATEGORIES.region;
     let regionScore = 0;
     for (const kw of regionCat.keywords) {
       if (text.includes(kw)) regionScore++;
     }
-    if (regionScore > 0 && !hasFootballContext(text)) {
+    if (regionScore > 0 && !isSport) {
       return { ...article, category: 'region', relevanceScore: regionScore + 10 };
     }
 
     // Alle Kategorien prüfen (inkl. wissen)
-    // Double-Check: Kategorie braucht mindestens 2 Keyword-Treffer ODER 1 sehr spezifisches
     const allCatKeys = [...CATEGORY_ORDER, 'wissen'];
     for (const key of allCatKeys) {
       if (key === 'allgemein' || key === 'region') continue;
+
+      // Sport-Artikel NICHT in Nicht-Sport-Kategorien stecken!
+      if (isSport) continue;
+
       let score = 0;
       const matchedKws = [];
       for (const kw of CATEGORIES[key].keywords) {
         if (text.includes(kw)) { score++; matchedKws.push(kw); }
       }
+
+      // BLAULICHT: Extra-streng — braucht min. 1 starkes Blaulicht-Keyword
+      if (key === 'blaulicht') {
+        const hasStrongBlaulicht = blaulichtStrong.some(kw => text.includes(kw));
+        if (!hasStrongBlaulicht) continue; // Kein echtes Blaulicht
+      }
+
       // Double-Check: braucht min. 2 Treffer, oder 1 Treffer wenn das Keyword sehr spezifisch ist (>8 Zeichen)
       const hasStrongMatch = matchedKws.some(kw => kw.length > 8);
       if (score >= 2 || (score === 1 && hasStrongMatch)) {
@@ -905,8 +948,8 @@ function categorizeArticles(articles) {
       }
     }
 
-    // Falls Region-Keywords gematcht aber Fussball war: trotzdem Region wenn kein besserer Match
-    if (regionScore > 0 && bestCategory === 'allgemein') {
+    // Falls Region-Keywords gematcht aber Sport war: Region nur wenn kein besserer Match
+    if (regionScore > 0 && bestCategory === 'allgemein' && !isSport) {
       return { ...article, category: 'region', relevanceScore: regionScore + 10 };
     }
 
@@ -981,6 +1024,7 @@ function rateContentTrust(article) {
 function selectBestArticles(articles) {
   const selected = [];
   const used = new Set();
+  globalUsedTitles = new Set(); // Reset bei jedem Refresh
 
   const sorted = [...articles].sort((a, b) => {
     const relevanceDiff = (b.relevanceScore || 0) - (a.relevanceScore || 0);
@@ -993,16 +1037,8 @@ function selectBestArticles(articles) {
     let catArticles = sorted.filter(a => a.category === catKey && !used.has(a.title));
     let picks = catArticles.slice(0, catDef.max);
 
-    // Falls zu wenig Artikel: aus ungenutzten auffüllen (schwächere Kategorisierung akzeptieren)
-    if (picks.length < (catDef.min || 0) && catKey !== 'allgemein') {
-      const needed = (catDef.min || 0) - picks.length;
-      const extras = sorted.filter(a => !used.has(a.title) && !picks.includes(a) && a.category === 'allgemein');
-      const fill = extras.slice(0, needed);
-      fill.forEach(f => { f.category = catKey; }); // Umkategorisieren
-      picks = [...picks, ...fill];
-    }
-
-    picks.forEach(p => { selected.push(p); used.add(p.title); });
+    // KEINE Backfill-Logik: lieber weniger Artikel als falsch kategorisierte!
+    picks.forEach(p => { selected.push(p); used.add(p.title); globalUsedTitles.add(p.title); });
   }
 
   return selected;
@@ -1346,10 +1382,13 @@ function isFootballArticle(text) {
     // Spielbegriffe
     'elfmeter', 'penalty', 'freistoss', 'eckball', 'corner',
     'halbzeit', 'nachspielzeit', 'anpfiff', 'abpfiff',
+    'traumtor', 'traumtore', 'eigentor',
     'gelbe karte', 'rote karte', 'platzverweis',
     'torschütz', 'torschuetz', 'torhüter', 'torhueter',
     'stürmer', 'stuermer', 'mittelfeld', 'abwehr', 'verteidiger',
     'schiedsrichter', 'var',
+    'partie', 'unterliegt', 'besiegt', 'bezwingt', 'niederlage',
+    'remis', 'unentschieden',
     // Strukturen
     'tabelle', 'meisterschaft', 'pokal', 'cupfinal', 'cup-', 'derby',
     'aufstieg', 'abstieg', 'relegation', 'playoff',
@@ -1361,6 +1400,7 @@ function isFootballArticle(text) {
     'mbappe', 'mbappé', 'haaland', 'bellingham', 'vinicius',
     'lewandowski', 'de bruyne', 'salah', 'messi', 'ronaldo',
     'xhaka', 'shaqiri', 'sommer', 'akanji', 'embolo', 'ndoye',
+    'wirtz', 'musiala', 'sané', 'gnabry', 'müller',
     'lamine yamal', 'pedri', 'gavi'
   ];
   // Double-Check: braucht mindestens 2 Fussball-Signale, nicht bloss 1 Keyword
@@ -1386,8 +1426,9 @@ async function loadSport() {
     if (!seen.has(key)) { seen.add(key); unique.push(a); }
   }
 
-  // Filtern: NUR echte Fussballartikel, KEIN Frauenfussball
+  // Filtern: NUR echte Fussballartikel, KEIN Frauenfussball, KEINE Duplikate mit Hauptnews
   const footballArticles = unique.filter(a => {
+    if (globalUsedTitles.has(a.title)) return false; // Schon in Hauptnews!
     const text = (a.title + ' ' + a.summary).toLowerCase();
     if (SPORT_EXCLUDE.some(ex => text.includes(ex))) return false;
     return isFootballArticle(text);
@@ -1412,7 +1453,7 @@ async function loadSport() {
       return matches >= needed;
     });
     const picks = matching.slice(0, cat.max);
-    picks.forEach(p => { sportDisplay.push({ ...p, sportSub: cat.label }); used.add(p.title); });
+    picks.forEach(p => { sportDisplay.push({ ...p, sportSub: cat.label }); used.add(p.title); globalUsedTitles.add(p.title); });
   }
 
   if (sportDisplay.length === 0) {
@@ -1528,7 +1569,19 @@ const WOW_KEYWORDS = [
 const WISSEN_EXCLUDE = [
   'aktie', 'börse', 'politik', 'bundesrat', 'wahl', 'partei', 'fussball',
   'nati', 'transfer', 'unfall', 'brand', 'polizei', 'gericht', 'abstimmung',
-  'krieg', 'militär', 'sanktion', 'inflation', 'zins', 'immobilien'
+  'krieg', 'militär', 'sanktion', 'inflation', 'zins', 'immobilien',
+  // Sport allgemein ausschliessen
+  'tennis', 'federer', 'nadal', 'djokovic', 'wimbledon', 'roland garros', 'us open tennis',
+  'australian open', 'atp', 'wta', 'grand slam',
+  'golf', 'tiger woods', 'pga', 'masters tournament', 'ryder cup',
+  'formel 1', 'formula 1', 'f1 ', 'verstappen', 'hamilton',
+  'ski ', 'slalom', 'abfahrt', 'super-g', 'riesenslalom', 'weltcup',
+  'olympia', 'olympisch', 'medaille',
+  'champions league', 'europa league', 'premier league', 'bundesliga',
+  'la liga', 'serie a', 'super league',
+  'fc ', 'fc-', 'uefa', 'fifa',
+  'eishockey', 'hockey', 'nhl', 'basketball', 'nba',
+  'boxen', 'mma', 'ufc', 'ringen'
 ];
 
 async function loadWissen() {
@@ -1558,8 +1611,9 @@ async function loadWissen() {
     if (!seen.has(key)) { seen.add(key); unique.push(a); }
   }
 
-  // Ausschluss und Keyword-Filter
+  // Ausschluss, Keyword-Filter UND globale Dedup
   const filtered = unique.filter(a => {
+    if (globalUsedTitles.has(a.title)) return false; // Schon woanders angezeigt!
     const text = (a.title + ' ' + a.summary).toLowerCase();
     if (WISSEN_EXCLUDE.some(ex => text.includes(ex))) return false;
     return WISSEN_KEYWORDS.some(kw => text.includes(kw));
