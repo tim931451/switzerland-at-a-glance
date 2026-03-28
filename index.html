@@ -497,7 +497,7 @@ const CATEGORIES = {
     label: 'Allgemein',
     color: 'var(--allgemein)',
     keywords: [],
-    min: 3, max: 3
+    min: 3, max: 6
   },
   wissen: {
     label: 'Wissen',
@@ -507,7 +507,7 @@ const CATEGORIES = {
   }
 };
 
-const CATEGORY_ORDER = ['wirtschaft', 'geopolitik', 'politik', 'blaulicht', 'welt', 'region', 'allgemein'];
+const CATEGORY_ORDER = ['region', 'wirtschaft', 'geopolitik', 'politik', 'blaulicht', 'welt', 'allgemein'];
 
 const MARKET_SYMBOLS = [
   { label: 'Gold (CHF/oz)', symbol: 'GOLD', unit: 'CHF ', fallback: '~2.667' },
@@ -852,10 +852,8 @@ function convertUnits(text) {
 // ============================================================
 
 function categorizeArticles(articles) {
-  // ---- SPORT-ERKENNUNG (breit) ----
-  // Artikel die klar Sport sind, sollen NIE in Wirtschaft/Blaulicht/Welt etc. landen
-  const sportSignals = [
-    // Fussball
+  // ---- FUSSBALL-ERKENNUNG (nur Fussball!) ----
+  const footballSignals = [
     'fussball', 'fußball', 'champions league', 'europa league', 'conference league',
     'super league', 'la liga', 'premier league', 'bundesliga', 'serie a', 'ligue 1',
     'uefa', 'fifa', 'nations league', 'elfmeter', 'penalty',
@@ -872,26 +870,36 @@ function categorizeArticles(articles) {
     'mbappe', 'haaland', 'bellingham', 'vinicius', 'lewandowski', 'messi', 'ronaldo',
     'xhaka', 'shaqiri', 'sommer', 'embolo', 'akanji', 'ndoye', 'yakin',
     'wirtz', 'musiala', 'sané', 'gnabry', 'müller',
-    'lamine yamal', 'pedri', 'gavi', 'rotblau', 'st. jakob-park',
-    // Tennis
-    'tennis', 'federer', 'nadal', 'djokovic', 'wimbledon', 'roland garros',
-    'atp', 'wta', 'grand slam', 'australian open',
-    // Golf
-    'golf', 'golfer', 'tiger woods', 'pga', 'masters tournament', 'birdie', 'eagle', 'bogey',
-    // Motorsport
-    'formel 1', 'formula 1', 'f1 ', 'verstappen', 'hamilton',
-    // Wintersport
-    'ski ', 'slalom', 'abfahrt', 'super-g', 'riesenslalom', 'weltcup ski',
-    // Andere
-    'eishockey', 'hockey', 'nhl', 'basketball', 'nba', 'boxen', 'mma', 'ufc'
+    'lamine yamal', 'pedri', 'gavi', 'rotblau', 'st. jakob-park'
   ];
 
-  function isSportArticle(text) {
-    return sportSignals.filter(kw => text.includes(kw)).length >= 2;
+  // ---- NICHT-FUSSBALL SPORT (Tennis, Golf, F1, Ski, etc.) ----
+  // Diese gehen in ALLGEMEIN, nicht in Sport und nicht in andere Fachkategorien
+  const nonFootballSportSignals = [
+    'tennis', 'federer', 'nadal', 'djokovic', 'wimbledon', 'roland garros',
+    'atp', 'wta', 'grand slam', 'australian open',
+    'golf', 'golfer', 'tiger woods', 'pga', 'masters tournament', 'birdie', 'eagle', 'bogey',
+    'formel 1', 'formula 1', 'f1 ', 'verstappen', 'hamilton',
+    'ski ', 'slalom', 'abfahrt', 'super-g', 'riesenslalom', 'weltcup ski',
+    'eishockey', 'hockey', 'nhl', 'basketball', 'nba', 'boxen', 'mma', 'ufc',
+    'olympia', 'olympisch', 'leichtathletik', 'schwimmen', 'turnen', 'radfahren',
+    'tour de france', 'giro', 'vuelta', 'radsport', 'cycling'
+  ];
+
+  function isFootballOnly(text) {
+    return footballSignals.filter(kw => text.includes(kw)).length >= 2;
   }
 
-  function hasFootballContext(text) {
-    return sportSignals.filter(kw => text.includes(kw)).length >= 2;
+  function isNonFootballSport(text) {
+    const nfHits = nonFootballSportSignals.filter(kw => text.includes(kw)).length;
+    const fbHits = footballSignals.filter(kw => text.includes(kw)).length;
+    // Ist Nicht-Fussball-Sport wenn ≥2 NF-Sport-Keywords UND nicht gleichzeitig starker Fussball-Bezug
+    return nfHits >= 2 && fbHits < 2;
+  }
+
+  // Kombiniert: ist irgendein Sport?
+  function isAnySport(text) {
+    return isFootballOnly(text) || isNonFootballSport(text);
   }
 
   // ---- BLAULICHT-Spezifisch: nur echte Polizei/Kriminal/Unfall-Meldungen ----
@@ -909,15 +917,27 @@ function categorizeArticles(articles) {
     const titleLower = article.title.toLowerCase();
     let bestCategory = 'allgemein';
     let bestScore = 0;
-    const isSport = isSportArticle(text);
+    const isFootball = isFootballOnly(text);
+    const isNFSport = isNonFootballSport(text);
+    const isSport = isFootball || isNFSport;
 
-    // Region bekommt Priorität – ABER Sport-Artikel ausschliessen!
+    // Nicht-Fussball-Sport → direkt in Allgemein (Tennis, Golf, F1, Ski, etc.)
+    if (isNFSport) {
+      return { ...article, category: 'allgemein', relevanceScore: 1 };
+    }
+
+    // Fussball-Artikel → nicht in andere Kategorien stecken (wird von Sport-Sektion behandelt)
+    if (isFootball) {
+      return { ...article, category: 'allgemein', relevanceScore: 0 };
+    }
+
+    // Region bekommt Priorität – ABER Sport-Artikel bereits oben abgefangen
     const regionCat = CATEGORIES.region;
     let regionScore = 0;
     for (const kw of regionCat.keywords) {
       if (text.includes(kw)) regionScore++;
     }
-    if (regionScore > 0 && !isSport) {
+    if (regionScore > 0) {
       return { ...article, category: 'region', relevanceScore: regionScore + 10 };
     }
 
@@ -925,9 +945,6 @@ function categorizeArticles(articles) {
     const allCatKeys = [...CATEGORY_ORDER, 'wissen'];
     for (const key of allCatKeys) {
       if (key === 'allgemein' || key === 'region') continue;
-
-      // Sport-Artikel NICHT in Nicht-Sport-Kategorien stecken!
-      if (isSport) continue;
 
       let score = 0;
       const matchedKws = [];
@@ -938,7 +955,7 @@ function categorizeArticles(articles) {
       // BLAULICHT: Extra-streng — braucht min. 1 starkes Blaulicht-Keyword
       if (key === 'blaulicht') {
         const hasStrongBlaulicht = blaulichtStrong.some(kw => text.includes(kw));
-        if (!hasStrongBlaulicht) continue; // Kein echtes Blaulicht
+        if (!hasStrongBlaulicht) continue;
       }
 
       // Double-Check: braucht min. 2 Treffer, oder 1 Treffer wenn das Keyword sehr spezifisch ist (>8 Zeichen)
@@ -946,11 +963,6 @@ function categorizeArticles(articles) {
       if (score >= 2 || (score === 1 && hasStrongMatch)) {
         if (score > bestScore) { bestScore = score; bestCategory = key; }
       }
-    }
-
-    // Falls Region-Keywords gematcht aber Sport war: Region nur wenn kein besserer Match
-    if (regionScore > 0 && bestCategory === 'allgemein' && !isSport) {
-      return { ...article, category: 'region', relevanceScore: regionScore + 10 };
     }
 
     return { ...article, category: bestCategory, relevanceScore: bestScore };
@@ -1352,7 +1364,7 @@ const SPORT_CATS = {
       'fc zürich', 'fcz', 'fc luzern', 'fc lugano', 'fc st. gallen', 'servette',
       'grasshoppers', 'gc ', 'lausanne-sport', 'fc sion', 'fc winterthur'],
     minMatches: 1,
-    max: 4
+    max: 6
   }
 };
 
@@ -1522,7 +1534,7 @@ const WISSEN_SOURCES = [
   { name: 'SRF Wissen',       url: 'https://www.srf.ch/wissen/bnf/rss/9197',                       icon: 'SRF' },
 ];
 
-// Keywords die auf wirklich spannende, wenig bekannte Inhalte deuten
+// Keywords die auf zeitlose, spannende Wissen-Inhalte deuten ("Wusstest du dass..."-Stil)
 const WISSEN_KEYWORDS = [
   // Entdeckungen & Durchbrüche
   'entdeckt', 'entdeckung', 'erstmals', 'neu entdeckt', 'durchbruch', 'überraschend',
@@ -1535,21 +1547,21 @@ const WISSEN_KEYWORDS = [
   // Natur & Biologie
   'tier', 'tierart', 'pflanze', 'evolution', 'dna', 'gen', 'genetik', 'zelle',
   'virus', 'bakterien', 'pilz', 'ökosystem', 'artensterben', 'biodiversität',
-  'migration', 'instinkt', 'intelligenz tiere', 'oktopus', 'wale', 'delfine',
+  'instinkt', 'intelligenz tiere', 'oktopus', 'wale', 'delfine',
   // Medizin & Gesundheit (unbekannte Fakten)
   'impfstoff', 'krebstherapie', 'stammzellen', 'organ', 'neurologie', 'gehirn',
   'schlaf', 'microbiom', 'placebo', 'immunsystem', 'erbkrankheit',
   // KI & Technologie
-  'ki ', 'künstliche intelligenz', 'roboter', 'quantencomputer', 'chip', 'halbleiter',
+  'künstliche intelligenz', 'roboter', 'quantencomputer', 'chip', 'halbleiter',
   'fusion', 'kernfusion', 'wasserstoff', 'solar', 'speicher', 'batterietechnologie',
   // Geschichte & Archäologie
   'archäologie', 'antike', 'prähistorisch', 'steinzeit', 'bronze', 'römer',
   'entschlüsselt', 'schrift', 'handschrift', 'höhlenmalerei', 'pyramide',
   // Psychologie & Verhalten
   'psychologie', 'kognition', 'wahrnehmung', 'gedächtnis', 'träume', 'emotion',
-  'verhalten', 'soziale', 'sucht', 'motivation', 'persönlichkeit',
+  'verhalten', 'sucht', 'motivation', 'persönlichkeit',
   // Klima & Erde
-  'klimawandel', 'gletscher', 'ozean', 'tiefsee', 'vulkan', 'erdbeben',
+  'gletscher', 'ozean', 'tiefsee', 'vulkan',
   'meteroit', 'asteroid', 'eiszeit', 'meeresspiegel',
   // Faszinierende Fakten / Trivia
   'überraschend', 'erstaunlich', 'kaum bekannt', 'wusstest du', 'fakt',
@@ -1565,12 +1577,14 @@ const WOW_KEYWORDS = [
   'neu entdeckt', 'sensation', 'historischer fund', 'durchbruch'
 ];
 
-// Ausschluss: Alltägliche News die nichts mit Wissen zu tun haben
+// Ausschluss: Alltägliche News & aktuelle Ereignisse (Wissen soll ZEITLOS sein!)
 const WISSEN_EXCLUDE = [
+  // Wirtschaft & Politik
   'aktie', 'börse', 'politik', 'bundesrat', 'wahl', 'partei', 'fussball',
   'nati', 'transfer', 'unfall', 'brand', 'polizei', 'gericht', 'abstimmung',
   'krieg', 'militär', 'sanktion', 'inflation', 'zins', 'immobilien',
-  // Sport allgemein ausschliessen
+  'koalition', 'gesetz', 'verordnung', 'referendum', 'initiative',
+  // Sport komplett ausschliessen
   'tennis', 'federer', 'nadal', 'djokovic', 'wimbledon', 'roland garros', 'us open tennis',
   'australian open', 'atp', 'wta', 'grand slam',
   'golf', 'tiger woods', 'pga', 'masters tournament', 'ryder cup',
@@ -1581,7 +1595,10 @@ const WISSEN_EXCLUDE = [
   'la liga', 'serie a', 'super league',
   'fc ', 'fc-', 'uefa', 'fifa',
   'eishockey', 'hockey', 'nhl', 'basketball', 'nba',
-  'boxen', 'mma', 'ufc', 'ringen'
+  'boxen', 'mma', 'ufc', 'ringen',
+  // Tagesaktuelle Signale (Wissen soll zeitlos sein)
+  'heute', 'gestern', 'morgen früh', 'aktuell', 'breaking',
+  'festgenommen', 'verhaftet', 'angeklagt', 'verurteilt'
 ];
 
 async function loadWissen() {
@@ -1619,12 +1636,31 @@ async function loadWissen() {
     return WISSEN_KEYWORDS.some(kw => text.includes(kw));
   });
 
-  // Scoring: Keyword-Treffer + Wow-Bonus
+  // Scoring: Keyword-Treffer + Wow-Bonus + Zeitlosigkeits-Bonus
+  const timelessSignals = [
+    'wusstest du', 'kaum bekannt', 'erstaunlich', 'warum eigentlich', 'wie funktioniert',
+    'jahrmillionen', 'jahrtausende', 'uraltes', 'fossil', 'evolution', 'universum',
+    'geheimnis', 'rätselhaft', 'phänomen', 'paradox', 'mythos', 'irrtum',
+    'archäologie', 'antike', 'prähistorisch', 'steinzeit', 'höhlenmalerei', 'pyramide',
+    'tiefsee', 'schwarzes loch', 'dunkle materie', 'galaxie', 'lichtjahre',
+    'dna', 'genetik', 'stammzellen', 'neurologie', 'gehirn', 'psychologie',
+    'instinkt', 'oktopus', 'wale', 'delfine', 'tierart'
+  ];
+  const currentNewsSignals = [
+    'regierung', 'ministerium', 'behörde', 'partei', 'abstimmung',
+    'firma', 'unternehmen', 'konzern', 'aktie', 'börse',
+    'festnahme', 'unfall', 'brand', 'prozess gegen'
+  ];
+
   const scored = filtered.map(a => {
     const text = (a.title + ' ' + a.summary).toLowerCase();
     const kwScore = WISSEN_KEYWORDS.filter(kw => text.includes(kw)).length;
     const wowBonus = WOW_KEYWORDS.filter(kw => text.includes(kw)).length * 3;
-    return { ...a, wissenScore: kwScore + wowBonus };
+    // Zeitlosigkeits-Bonus: bevorzuge Artikel die "Wusstest du"-Charakter haben
+    const timelessBonus = timelessSignals.filter(kw => text.includes(kw)).length * 2;
+    // Malus für tagesaktuelle Signale
+    const currentMalus = currentNewsSignals.filter(kw => text.includes(kw)).length * 5;
+    return { ...a, wissenScore: kwScore + wowBonus + timelessBonus - currentMalus };
   }).sort((a, b) => {
     const scoreDiff = b.wissenScore - a.wissenScore;
     if (scoreDiff !== 0) return scoreDiff;
@@ -1647,7 +1683,7 @@ async function loadWissen() {
   let html = `
     <div class="section-header">
       <span class="section-dot" style="background: var(--wissen)"></span>
-      Wissen
+      Wissen – Wusstest du dass...
       <span class="section-count">${picks.length} Artikel</span>
     </div>
     <div class="news-grid">
