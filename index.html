@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switzerland at a Glance</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='bg' cx='50%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23c0392b'/%3E%3Cstop offset='100%25' stop-color='%23922b21'/%3E%3C/radialGradient%3E%3ClinearGradient id='cross' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='100%25' stop-color='%23e8e8e8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='6' fill='url(%23bg)'/%3E%3Crect x='13' y='6' width='6' height='20' rx='1' fill='url(%23cross)'/%3E%3Crect x='6' y='13' width='20' height='6' rx='1' fill='url(%23cross)'/%3E%3Ccircle cx='24' cy='8' r='3' fill='%236c7ee1' opacity='0.9'/%3E%3Ccircle cx='24' cy='8' r='1.5' fill='%23a8b4f0'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='bg' cx='50%25' cy='40%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23c0392b'/%3E%3Cstop offset='100%25' stop-color='%23922b21'/%3E%3C/radialGradient%3E%3ClinearGradient id='cross' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='100%25' stop-color='%23e8e8e8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='6' fill='url(%23bg)'/%3E%3Crect x='13' y='6' width='6' height='20' rx='1' fill='url(%23cross)'/%3E%3Crect x='6' y='13' width='20' height='6' rx='1' fill='url(%23cross)'/%3E%3Ccircle cx='24' cy='8' r='3' fill='%236c7ee1' opacity='0.9'/%3E%3Ccircle cx='24' cy='8' r='1.5' fill='%23a8b4f0'/%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22Switzerland%20at%20a%20Glance%22%2C%22short_name%22%3A%22CH%20Glance%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f1117%22%2C%22theme_color%22%3A%22%236c7ee1%22%7D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1117">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-hover: #222632;
+    --border: #2a2e3a;
+    --text: #e4e6ed;
+    --text-muted: #8b8fa3;
+    --accent: #6c7ee1;
+    --wirtschaft: #22c55e;
+    --geopolitik: #ef4444;
+    --politik: #3b82f6;
+    --blaulicht: #f59e0b;
+    --welt: #a855f7;
+    --region: #14b8a6;
+    --allgemein: #6b7280;
+    --wissen: #06b6d4;
+    --rohstoffe: #f97316;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .header-left h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #fff 0%, #a0a6c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header-left .subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+  }
+
+  .header-left .date {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .refresh-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .refresh-btn:hover { background: var(--card-hover); border-color: var(--accent); }
+  .refresh-btn.loading .refresh-icon { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Market Data Bar */
+  .market-bar {
+    display: flex;
+    gap: 12px;
+    padding: 16px 0;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .market-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+
+  .market-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .market-value {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .market-change {
+    font-size: 12px;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .market-change.up { color: var(--wirtschaft); }
+  .market-change.down { color: var(--geopolitik); }
+
+  /* Category Filter */
+  .category-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* News Grid */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* Clickable Card */
+  a.news-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .news-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .news-card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .news-card .category-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 12px 0 0 12px;
+  }
+
+  .news-card .card-content { padding-left: 12px; }
+
+  .news-card .category-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .news-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+
+  .news-card .summary {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .news-card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .news-card .source {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .news-card .open-icon {
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .news-card:hover .open-icon { opacity: 1; }
+
+  /* Vertrauens-Badge */
+  .trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .trust-5 { background: rgba(34,197,94,0.15);  color: #22c55e; }  /* Sehr fundiert */
+  .trust-4 { background: rgba(59,130,246,0.15); color: #60a5fa; }  /* Fundiert */
+  .trust-3 { background: rgba(245,158,11,0.15); color: #f59e0b; }  /* Solide */
+  .trust-2 { background: rgba(239,68,68,0.12);  color: #f87171; }  /* Oberflächlich */
+  .trust-1 { background: rgba(239,68,68,0.20);  color: #ef4444; }  /* Clickbait */
+
+  .trust-dots { letter-spacing: 1px; }
+
+  /* Category Colors */
+  .cat-wirtschaft .category-stripe { background: var(--wirtschaft); }
+  .cat-wirtschaft .category-tag { background: rgba(34,197,94,0.15); color: var(--wirtschaft); }
+  .cat-geopolitik .category-stripe { background: var(--geopolitik); }
+  .cat-geopolitik .category-tag { background: rgba(239,68,68,0.15); color: var(--geopolitik); }
+  .cat-politik .category-stripe { background: var(--politik); }
+  .cat-politik .category-tag { background: rgba(59,130,246,0.15); color: var(--politik); }
+  .cat-blaulicht .category-stripe { background: var(--blaulicht); }
+  .cat-blaulicht .category-tag { background: rgba(245,158,11,0.15); color: var(--blaulicht); }
+  .cat-welt .category-stripe { background: var(--welt); }
+  .cat-welt .category-tag { background: rgba(168,85,247,0.15); color: var(--welt); }
+  .cat-region .category-stripe { background: var(--region); }
+  .cat-region .category-tag { background: rgba(20,184,166,0.15); color: var(--region); }
+  .cat-allgemein .category-stripe { background: var(--allgemein); }
+  .cat-allgemein .category-tag { background: rgba(107,114,128,0.15); color: var(--allgemein); }
+  .cat-wissen .category-stripe { background: var(--wissen); }
+  .cat-wissen .category-tag { background: rgba(6,182,212,0.15); color: var(--wissen); }
+
+  /* Loading */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), #a855f7, var(--accent));
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    z-index: 1000;
+  }
+
+  .loading-overlay.active { display: block; }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+
+  /* Section Headers */
+  .section-header {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 32px 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-header:first-of-type { margin-top: 0; }
+
+  .section-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .section-count {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* Wetter */
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .weather-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .weather-card:hover {
+    background: var(--card-hover);
+    border-color: #38bdf8;
+  }
+
+  .weather-day { font-weight: 700; font-size: 14px; color: #fff; }
+  .weather-date { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+  .weather-icon { font-size: 28px; margin: 6px 0; }
+  .weather-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; min-height: 28px; }
+  .weather-temps { margin-bottom: 4px; }
+  .temp-max { font-size: 18px; font-weight: 700; color: #fff; }
+  .temp-min { font-size: 14px; color: var(--text-muted); margin-left: 6px; }
+  .weather-detail { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* Sport */
+  .cat-sport .category-stripe { background: #10b981; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .news-grid { grid-template-columns: 1fr; }
+    .weather-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+    .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .header-left h1 { font-size: 22px; }
+    .market-item { min-width: 130px; padding: 10px 14px; }
+    .market-value { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingBar"></div>
+
+<div class="app-container">
+  <div class="header">
+    <div class="header-left">
+      <h1>Switzerland at a Glance</h1>
+      <div class="subtitle">Alles Wichtige an einem Ort</div>
+      <div class="date" id="dateDisplay"></div>
+    </div>
+    <div class="header-right">
+      <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">
+        <span class="refresh-icon">&#8635;</span> Aktualisieren
+      </button>
+    </div>
+  </div>
+
+  <div class="market-bar" id="marketBar"></div>
+
+  <div class="category-filter" id="categoryFilter"></div>
+
+  <div id="newsContainer"></div>
+
+  <div id="weatherContainer"></div>
+
+  <div id="sportContainer"></div>
+
+  <div id="wissenContainer"></div>
+</div>
+
+
+<script>
+// ============================================================
+// KONFIGURATION
+// ============================================================
+
+const REFRESH_INTERVAL = 60 * 60 * 1000; // 60 Minuten
+const PROXY = 'https://api.allorigins.win/raw?url=';
+
+const SOURCES = [
+  { name: 'SRF News',       url: 'https://www.srf.ch/news/bnf/rss/1890',                   icon: 'SRF' },
+  { name: 'NZZ',            url: 'https://www.nzz.ch/recent.rss',                          icon: 'NZZ' },
+  { name: 'SWI swissinfo',  url: 'https://www.swissinfo.ch/ger/alle-news/rss',             icon: 'SWI' },
+  { name: 'Tagesanzeiger',  url: 'https://www.tagesanzeiger.ch/rss2',                      icon: 'TA'  },
+  { name: 'Handelszeitung', url: 'https://www.handelszeitung.ch/rss/news.rss',             icon: 'HZ'  },
+  { name: 'BZ Basel',       url: 'https://www.bzbasel.ch/rss',                             icon: 'BZB' },
+  { name: 'Basler Zeitung', url: 'https://www.basellandschaftlichezeitung.ch/rss',         icon: 'BAZ' },
+  { name: '20 Minuten',     url: 'https://www.20min.ch/rss/rss.xml',                       icon: '20M' },
+  { name: 'Watson',         url: 'https://www.watson.ch/api/1.0/rss/index.xml',            icon: 'WAT' },
+  { name: 'Blick',          url: 'https://www.blick.ch/news/rss.xml',                      icon: 'BLK' },
+];
+
+const CATEGORIES = {
+  region: {
+    label: 'Region Basel',
+    color: 'var(--region)',
+    keywords: ['basel', 'reinach', 'aesch', 'münchenstein', 'muenchenstein', 'oberwil', 'allschwil', 'ettingen', 'bottmingen', 'dornach', 'arlesheim', 'binningen', 'birsfelden', 'muttenz', 'pratteln', 'laufen', 'liestal', 'therwil', 'biel-benken', 'pfeffingen', 'baselland', 'baselbiet', 'baselstadt', 'basel-stadt', 'basel-land', 'birsigtal', 'leimental', 'birs', 'rhein basel', 'basler', 'riehen', 'bettingen', 'rheinfelden', 'münchenstein bl', 'gempen', 'dornachbrugg', 'hochwald', 'nunningen', 'breitenbach', 'zwingen', 'grellingen', 'duggingen', 'büren', 'rodersdorf', 'witterswil', 'flüh', 'metzerlen', 'hofstetten', 'bättwil', 'burg im leimental', 'kleinlützel'],
+    min: 2, max: 3
+  },
+  wirtschaft: {
+    label: 'Wirtschaft',
+    color: 'var(--wirtschaft)',
+    keywords: ['wirtschaft', 'smi', 'aktie', 'börse', 'boerse', 'bank', 'ubs', 'credit suisse', 'snb', 'inflation', 'gdp', 'bip', 'export', 'import', 'handel', 'unternehmen', 'firma', 'konzern', 'umsatz', 'gewinn', 'verlust', 'franken', 'chf', 'markt', 'investition', 'konjunktur', 'arbeitsmarkt', 'arbeitslos', 'finanz', 'versicherung', 'immobilien', 'nestlé', 'novartis', 'roche', 'zurich insurance', 'swiss re', 'startup', 'wirtschafts', 'ökonom', 'oekonom', 'rezession', 'wachstum', 'zinsen', 'leitzins', 'kurs', 'dividende', 'börsen'],
+    min: 3, max: 6
+  },
+  geopolitik: {
+    label: 'Geopolitik',
+    color: 'var(--geopolitik)',
+    keywords: ['geopolitik', 'krieg', 'konflikt', 'ukraine', 'russland', 'china', 'usa', 'nato', 'sanktion', 'waffen', 'militär', 'militaer', 'armee', 'iran', 'israel', 'gaza', 'nahost', 'taiwan', 'nordkorea', 'terror', 'sicherheitspolitik', 'neutralität', 'neutralitaet', 'rüstung', 'ruestung', 'drohne', 'cyberkrieg', 'spionage', 'geheimdienst', 'diplomatie', 'friedens', 'waffenstillstand', 'eskalation'],
+    min: 3, max: 6
+  },
+  politik: {
+    label: 'Politik',
+    color: 'var(--politik)',
+    keywords: ['politik', 'bundesrat', 'parlament', 'nationalrat', 'ständerat', 'staenderat', 'abstimmung', 'initiative', 'referendum', 'partei', 'svp', 'sp', 'fdp', 'grüne', 'gruene', 'mitte', 'wahl', 'gesetz', 'verordnung', 'bilateral', 'eu', 'schengen', 'asyl', 'migration', 'integration', 'kanton', 'gemeinde', 'steuern', 'reform', 'demokratie', 'volksinitiative', 'bundeshaus', 'regierung'],
+    min: 2, max: 6
+  },
+  blaulicht: {
+    label: 'Blaulicht',
+    color: 'var(--blaulicht)',
+    keywords: ['polizei', 'unfall', 'brand', 'feuer', 'verbrechen', 'mord', 'überfall', 'ueberfall', 'diebstahl', 'betrug', 'festnahme', 'verhaftet', 'gericht', 'urteil', 'anklage', 'opfer', 'notfall', 'rettung', 'ambulanz', 'feuerwehr', 'blaulicht', 'kriminal', 'delikt', 'straftat', 'ermittlung', 'verdächtig', 'verdaechtig', 'tödlich', 'toedlich', 'lebensgefahr', 'messerattacke', 'schiesserei'],
+    min: 2, max: 4
+  },
+  welt: {
+    label: 'Welt',
+    color: 'var(--welt)',
+    keywords: ['international', 'welt', 'global', 'ausland', 'europa', 'afrika', 'asien', 'amerika', 'australien', 'klima', 'umwelt', 'pandemie', 'who', 'uno', 'vereinte nationen', 'gipfel', 'abkommen', 'erderwärmung', 'katastrophe', 'erdbeben', 'tsunami', 'hurrikan', 'flüchtling', 'fluechtling', 'humanitär', 'humanitaer'],
+    min: 2, max: 3
+  },
+  allgemein: {
+    label: 'Allgemein',
+    color: 'var(--allgemein)',
+    keywords: [],
+    min: 3, max: 3
+  },
+  wissen: {
+    label: 'Wissen',
+    color: 'var(--wissen)',
+    keywords: ['wissenschaft', 'forschung', 'studie', 'forscher', 'entdeckt', 'entdeckung', 'erstmals', 'durchbruch', 'experiment', 'universität', 'eth', 'epfl', 'nasa', 'esa', 'weltraum', 'universum', 'galaxie', 'schwarzes loch', 'quantenphysik', 'quantencomputer', 'kernfusion', 'dna', 'genetik', 'evolution', 'fossil', 'ausgrabung', 'archäologie', 'biologie', 'neurologie', 'gehirn', 'psychologie', 'tiefsee', 'ozean', 'vulkan', 'klimawandel', 'gletscher', 'artensterben', 'biodiversität', 'impfstoff', 'stammzellen', 'krebstherapie', 'microbiom', 'künstliche intelligenz', 'ki ', 'roboter', 'chip', 'wasserstoff', 'solar', 'tierart', 'oktopus', 'prehistoric', 'prähistorisch', 'jahrmillionen', 'jahrtausende', 'überraschend', 'unerwartet', 'rätselhaft', 'faszinierend'],
+    min: 3, max: 3
+  }
+};
+
+const CATEGORY_ORDER = ['wirtschaft', 'geopolitik', 'politik', 'blaulicht', 'welt', 'region', 'allgemein'];
+
+const MARKET_SYMBOLS = [
+  { label: 'Gold (CHF/oz)', symbol: 'GOLD', unit: 'CHF ', fallback: '~2.667' },
+  { label: 'Silber (CHF/oz)', symbol: 'SILVER', unit: 'CHF ', fallback: '~29.60' },
+  { label: 'Brent (CHF/Fass)', symbol: 'BRENT', unit: 'CHF ', fallback: '~64.60' },
+  { label: 'EUR/CHF', symbol: 'EURCHF', unit: '', fallback: '~0.9580' },
+  { label: 'USD/CHF', symbol: 'USDCHF', unit: '', fallback: '~0.8830' },
+  { label: 'SMI', symbol: 'SMI', unit: '', fallback: '~13.100' },
+];
+
+// ============================================================
+// ZUSTAND
+// ============================================================
+
+let allArticles = [];
+let displayedArticles = [];
+let activeFilter = 'alle';
+let lastRefreshTime = null;
+let refreshTimer = null;
+
+// ============================================================
+// INITIALISIERUNG
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', async () => {
+  updateDateDisplay();
+  buildCategoryFilter();
+  renderMarketData();
+  await loadNews();
+  loadWeather();
+  loadSport();
+  loadWissen();
+  startAutoRefresh();
+});
+
+// ============================================================
+// DATUM & ZEIT
+// ============================================================
+
+function updateDateDisplay() {
+  const days = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  const now = new Date();
+  document.getElementById('dateDisplay').textContent = `${days[now.getDay()]}, ${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+function formatTime(date) {
+  return date.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ============================================================
+// KATEGORIE-FILTER
+// ============================================================
+
+function buildCategoryFilter() {
+  const container = document.getElementById('categoryFilter');
+  let html = '<button class="filter-btn active" onclick="setFilter(\'alle\', this)">Alle</button>';
+  for (const key of CATEGORY_ORDER) {
+    html += `<button class="filter-btn" onclick="setFilter('${key}', this)">${CATEGORIES[key].label}</button>`;
+  }
+  // Wetter und Fussball als Scroll-Anker
+  html += '<button class="filter-btn" onclick="scrollToSection(\'weatherContainer\', this)">Wetter</button>';
+  html += '<button class="filter-btn" onclick="scrollToSection(\'sportContainer\', this)">Fussball</button>';
+  html += '<button class="filter-btn" onclick="scrollToSection(\'wissenContainer\', this)">Wissen</button>';
+  container.innerHTML = html;
+}
+
+function setFilter(category, btn) {
+  activeFilter = category;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderNews();
+}
+
+function scrollToSection(id, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Alle News anzeigen falls gefiltert
+  if (activeFilter !== 'alle') {
+    activeFilter = 'alle';
+    renderNews();
+  }
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+// MARKTDATEN
+// ============================================================
+
+function renderMarketData() {
+  const container = document.getElementById('marketBar');
+  container.innerHTML = MARKET_SYMBOLS.map(m => `
+    <div class="market-item">
+      <div class="market-label">${m.label}</div>
+      <div class="market-value" id="market-${m.symbol}">${m.unit}${m.fallback}</div>
+      <div class="market-change" id="market-change-${m.symbol}">Laden...</div>
+    </div>
+  `).join('');
+  fetchMarketData();
+}
+
+let usdToChf = 0.883; // Fallback-Kurs
+
+async function fetchMarketData() {
+  try {
+    const resp = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.rates && data.rates.CHF) {
+        usdToChf = data.rates.CHF;
+        const eurChf = data.rates.CHF / data.rates.EUR;
+
+        document.getElementById('market-EURCHF').textContent = eurChf.toFixed(4);
+        document.getElementById('market-change-EURCHF').textContent = 'Live-Kurs';
+        document.getElementById('market-change-EURCHF').className = 'market-change';
+
+        document.getElementById('market-USDCHF').textContent = usdToChf.toFixed(4);
+        document.getElementById('market-change-USDCHF').textContent = 'Live-Kurs';
+        document.getElementById('market-change-USDCHF').className = 'market-change';
+      }
+    }
+  } catch (e) {
+    console.log('Währungs-API nicht verfügbar, verwende Richtwerte');
+  }
+
+  // Rohstoffpreise in CHF umrechnen (USD-Richtwerte × aktueller Kurs)
+  const rohstoffe = [
+    { sym: 'GOLD',   usdPrice: 3020 },
+    { sym: 'SILVER', usdPrice: 33.5 },
+    { sym: 'BRENT',  usdPrice: 73.2 },
+  ];
+  rohstoffe.forEach(({ sym, usdPrice }) => {
+    const chfPrice = (usdPrice * usdToChf).toLocaleString('de-CH', { maximumFractionDigits: 2 });
+    document.getElementById(`market-${sym}`).textContent = 'CHF ' + chfPrice;
+    const el = document.getElementById(`market-change-${sym}`);
+    if (el) { el.textContent = 'Richtwert in CHF'; el.className = 'market-change'; }
+  });
+
+  // SMI Richtwert
+  const smiEl = document.getElementById('market-change-SMI');
+  if (smiEl && smiEl.textContent === 'Laden...') {
+    smiEl.textContent = 'Richtwert';
+    smiEl.className = 'market-change';
+  }
+}
+
+// ============================================================
+// NEWS LADEN
+// ============================================================
+
+async function loadNews() {
+  const loadingBar = document.getElementById('loadingBar');
+  const refreshBtn = document.getElementById('refreshBtn');
+  loadingBar.classList.add('active');
+  refreshBtn.classList.add('loading');
+
+  const results = await Promise.allSettled(SOURCES.map(s => fetchFeed(s)));
+
+  const newArticles = [];
+  results.forEach(r => {
+    if (r.status === 'fulfilled' && r.value) newArticles.push(...r.value);
+  });
+
+  if (newArticles.length > 0) {
+    const seen = new Set();
+    const unique = [];
+    for (const a of newArticles) {
+      const key = a.title.toLowerCase().replace(/[^a-zäöü0-9]/g, '').substring(0, 50);
+      if (!seen.has(key)) { seen.add(key); unique.push(a); }
+    }
+
+    const categorized = categorizeArticles(unique);
+
+    // Nur aktualisieren wenn die neuen Daten mindestens so gut sind
+    if (categorized.length >= allArticles.length * 0.5 || allArticles.length === 0) {
+      allArticles = categorized;
+    }
+  }
+
+  displayedArticles = selectBestArticles(allArticles);
+  renderNews();
+
+  loadingBar.classList.remove('active');
+  refreshBtn.classList.remove('loading');
+}
+
+async function fetchFeed(source) {
+  // Versuch 1: rss2json
+  try {
+    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
+    const resp = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.status === 'ok' && data.items) {
+        return data.items.map(item => ({
+          title: convertUnits(cleanText(item.title || '')),
+          summary: smartTruncate(convertUnits(cleanText(item.description || '')), 300),
+          link: item.link || '',
+          pubDate: new Date(item.pubDate || Date.now()),
+          source: source.name,
+          sourceIcon: source.icon,
+          category: null
+        })).filter(a => a.title.length > 10);
+      }
+    }
+  } catch (e) {
+    console.log(`Feed-Fehler (rss2json) für ${source.name}:`, e.message);
+  }
+
+  // Versuch 2: allorigins Proxy
+  try {
+    const resp = await fetch(PROXY + encodeURIComponent(source.url), { signal: AbortSignal.timeout(15000) });
+    if (resp.ok) {
+      const text = await resp.text();
+      return parseRSSXml(text, source);
+    }
+  } catch (e) {
+    console.log(`Feed-Fehler (Proxy) für ${source.name}:`, e.message);
+  }
+
+  return [];
+}
+
+function parseRSSXml(xml, source) {
+  try {
+    const doc = new DOMParser().parseFromString(xml, 'text/xml');
+    const articles = [];
+    doc.querySelectorAll('item').forEach(item => {
+      const title = item.querySelector('title')?.textContent || '';
+      const desc = item.querySelector('description')?.textContent || '';
+      const link = item.querySelector('link')?.textContent || '';
+      const pubDate = item.querySelector('pubDate')?.textContent || '';
+      if (title.length > 10) {
+        articles.push({
+          title: convertUnits(cleanText(title)),
+          summary: smartTruncate(convertUnits(cleanText(desc)), 300),
+          link, pubDate: pubDate ? new Date(pubDate) : new Date(),
+          source: source.name, sourceIcon: source.icon, category: null
+        });
+      }
+    });
+    return articles;
+  } catch (e) { return []; }
+}
+
+function cleanText(str) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = str;
+  return tmp.textContent.replace(/\s+/g, ' ').trim();
+}
+
+// Text am Satzende oder Wortende kürzen, nie mitten im Wort
+function smartTruncate(text, maxLen) {
+  if (!text || text.length <= maxLen) return text;
+
+  // Versuche am letzten Satzende (. ! ?) vor maxLen zu schneiden
+  const chunk = text.substring(0, maxLen);
+  const lastSentenceEnd = Math.max(
+    chunk.lastIndexOf('. '),
+    chunk.lastIndexOf('! '),
+    chunk.lastIndexOf('? '),
+    chunk.lastIndexOf('.)'),
+    chunk.lastIndexOf('."')
+  );
+
+  if (lastSentenceEnd > maxLen * 0.4) {
+    return text.substring(0, lastSentenceEnd + 1).trim();
+  }
+
+  // Sonst am letzten Leerzeichen oder Komma schneiden
+  const lastSpace = chunk.lastIndexOf(' ');
+  const lastComma = chunk.lastIndexOf(', ');
+  const cutPoint = Math.max(lastComma, lastSpace);
+
+  if (cutPoint > maxLen * 0.4) {
+    return text.substring(0, cutPoint).trim() + '...';
+  }
+
+  return chunk.trim() + '...';
+}
+
+// Einheitenumrechnung: imperial → metrisch / CHF
+function convertUnits(text) {
+  if (!text) return text;
+
+  // Fahrenheit → Celsius: z.B. "98°F" oder "98 °F" oder "98 degrees Fahrenheit"
+  text = text.replace(/(-?\d+(?:\.\d+)?)\s*°?\s*F(?:ahrenheit)?(?!\w)/g, (_, f) => {
+    const c = Math.round((parseFloat(f) - 32) * 5 / 9);
+    return `${c} °C`;
+  });
+
+  // Meilen → Kilometer: z.B. "5 miles" oder "5 mile"
+  text = text.replace(/(\d+(?:[.,]\d+)?)\s*miles?(?!\w)/gi, (_, m) => {
+    const km = (parseFloat(m.replace(',', '.')) * 1.60934).toFixed(1);
+    return `${km} km`;
+  });
+
+  // Fuss/Feet → Meter: z.B. "6 feet" "6 ft" "6'"
+  text = text.replace(/(\d+(?:[.,]\d+)?)\s*(?:feet|foot|ft)(?!\w)/gi, (_, f) => {
+    const m = (parseFloat(f.replace(',', '.')) * 0.3048).toFixed(2);
+    return `${m} m`;
+  });
+
+  // Zoll/Inches → Zentimeter: z.B. "12 inches" "12 inch" "12\""
+  text = text.replace(/(\d+(?:[.,]\d+)?)\s*(?:inches|inch|in\.)(?!\w)/gi, (_, i) => {
+    const cm = (parseFloat(i.replace(',', '.')) * 2.54).toFixed(1);
+    return `${cm} cm`;
+  });
+
+  // Pfund (Gewicht) → Kilogramm: z.B. "150 pounds" "150 lbs"
+  text = text.replace(/(\d+(?:[.,]\d+)?)\s*(?:pounds?|lbs?)(?!\w)/gi, (_, p) => {
+    const kg = (parseFloat(p.replace(',', '.')) * 0.453592).toFixed(1);
+    return `${kg} kg`;
+  });
+
+  // Yard → Meter: z.B. "100 yards"
+  text = text.replace(/(\d+(?:[.,]\d+)?)\s*yards?(?!\w)/gi, (_, y) => {
+    const m = (parseFloat(y.replace(',', '.')) * 0.9144).toFixed(1);
+    return `${m} m`;
+  });
+
+  // Dollar → CHF in Artikeltexten (nur wenn usdToChf bekannt)
+  text = text.replace(/\$\s*(\d+(?:[.,]\d{3})*(?:\.\d+)?)\s*(?:billion|million|trillion)?/gi, (match, num, suffix) => {
+    const s = (suffix || '').toLowerCase();
+    let val = parseFloat(num.replace(/,/g, ''));
+    if (s === 'billion') val *= 1e9;
+    else if (s === 'million') val *= 1e6;
+    else if (s === 'trillion') val *= 1e12;
+    const chf = val * usdToChf;
+    if (chf >= 1e9) return `CHF ${(chf / 1e9).toFixed(1)} Mrd.`;
+    if (chf >= 1e6) return `CHF ${(chf / 1e6).toFixed(1)} Mio.`;
+    return `CHF ${chf.toLocaleString('de-CH', { maximumFractionDigits: 2 })}`;
+  });
+
+  return text;
+}
+
+// ============================================================
+// KATEGORISIERUNG & RANKING
+// ============================================================
+
+function categorizeArticles(articles) {
+  return articles.map(article => {
+    const text = (article.title + ' ' + article.summary).toLowerCase();
+    let bestCategory = 'allgemein';
+    let bestScore = 0;
+
+    // Region bekommt Priorität – bei Match sofort zuweisen
+    const regionCat = CATEGORIES.region;
+    let regionScore = 0;
+    for (const kw of regionCat.keywords) {
+      if (text.includes(kw)) regionScore++;
+    }
+    if (regionScore > 0) {
+      return { ...article, category: 'region', relevanceScore: regionScore + 10 };
+    }
+
+    // Alle Kategorien prüfen (inkl. wissen, das nicht in CATEGORY_ORDER ist)
+    const allCatKeys = [...CATEGORY_ORDER, 'wissen'];
+    for (const key of allCatKeys) {
+      if (key === 'allgemein' || key === 'region') continue;
+      let score = 0;
+      for (const kw of CATEGORIES[key].keywords) {
+        if (text.includes(kw)) score++;
+      }
+      if (score > bestScore) { bestScore = score; bestCategory = key; }
+    }
+
+    return { ...article, category: bestCategory, relevanceScore: bestScore };
+  });
+}
+
+// Inhaltliche Vertrauenswürdigkeit bewerten (1-5)
+// Basiert auf Textqualität, Detailtiefe und Sachlichkeit – NICHT auf der Quelle
+function rateContentTrust(article) {
+  const text = (article.title + ' ' + (article.summary || '')).toLowerCase();
+  const fullText = article.title + ' ' + (article.summary || '');
+  let score = 3; // Basiswert: solide
+
+  // Positiv: Zahlen, Daten, Fakten → deutet auf fundierten Inhalt
+  const hasNumbers = (fullText.match(/\d+/g) || []).length;
+  if (hasNumbers >= 3) score += 0.5;
+  if (hasNumbers >= 5) score += 0.5;
+
+  // Positiv: Zitate (Anführungszeichen) → direkte Quellen
+  if (text.includes('«') || text.includes('»') || text.includes('"')) score += 0.5;
+
+  // Positiv: Konkrete Institutionen, Ämter, Organisationen
+  const institutions = ['bundesrat', 'parlament', 'snb', 'seco', 'bfs', 'bag', 'fedpol',
+    'universität', 'eth', 'studie', 'bericht', 'statistik', 'analyse', 'gemäss', 'gemaess',
+    'laut einer', 'gemäss einer', 'laut dem', 'laut der', 'ministerium', 'behörde', 'behoerde',
+    'gericht', 'staatsanwaltschaft', 'uno', 'who', 'nato', 'eu-kommission'];
+  const instMatches = institutions.filter(i => text.includes(i)).length;
+  if (instMatches >= 1) score += 0.5;
+  if (instMatches >= 3) score += 0.5;
+
+  // Positiv: Detaillierte Zusammenfassung (Länge)
+  if ((article.summary || '').length > 150) score += 0.3;
+  if ((article.summary || '').length > 250) score += 0.2;
+
+  // Negativ: Clickbait-Signale
+  const clickbait = ['unfassbar', 'schockierend', 'unglaublich', 'wahnsinn', 'krass',
+    'irre', 'mega', 'hammer', 'so reagiert', 'das steckt dahinter', 'deshalb',
+    'du wirst nicht glauben', 'dieser trick', 'endlich enthüllt', 'enthuellt',
+    'jetzt wird es ernst', 'der wahre grund', '!!!', '???', '!?'];
+  const clickbaitMatches = clickbait.filter(c => text.includes(c)).length;
+  if (clickbaitMatches >= 1) score -= 0.5;
+  if (clickbaitMatches >= 2) score -= 0.5;
+
+  // Negativ: Sehr kurze Zusammenfassung → wenig Substanz
+  if ((article.summary || '').length < 50) score -= 0.5;
+
+  // Negativ: Übermässig emotionale Sprache
+  const emotional = ['tragisch', 'herzzerreissend', 'süss', 'süüss', 'cute', 'omg',
+    'wow', 'haha', 'lol', 'drama', 'skandal'];
+  const emotionalMatches = emotional.filter(e => text.includes(e)).length;
+  if (emotionalMatches >= 2) score -= 0.5;
+
+  // Negativ: Rein werblicher Inhalt
+  if (text.includes('gesponsert') || text.includes('anzeige') || text.includes('werbung') ||
+      text.includes('promotion') || text.includes('sponsored')) score -= 1;
+
+  // Begrenzen auf 1-5
+  score = Math.max(1, Math.min(5, Math.round(score)));
+
+  const labels = {
+    5: 'Sehr fundiert',
+    4: 'Fundiert',
+    3: 'Solide',
+    2: 'Oberflächlich',
+    1: 'Clickbait'
+  };
+
+  return { trust: score, trustLabel: labels[score] };
+}
+
+function selectBestArticles(articles) {
+  const selected = [];
+  const used = new Set();
+
+  const sorted = [...articles].sort((a, b) => {
+    const relevanceDiff = (b.relevanceScore || 0) - (a.relevanceScore || 0);
+    const recencyDiff = b.pubDate - a.pubDate;
+    return relevanceDiff * 2 + recencyDiff / (1000 * 60 * 60);
+  });
+
+  for (const catKey of CATEGORY_ORDER) {
+    const catDef = CATEGORIES[catKey];
+    let catArticles = sorted.filter(a => a.category === catKey && !used.has(a.title));
+    let picks = catArticles.slice(0, catDef.max);
+
+    // Falls zu wenig Artikel: aus ungenutzten auffüllen (schwächere Kategorisierung akzeptieren)
+    if (picks.length < (catDef.min || 0) && catKey !== 'allgemein') {
+      const needed = (catDef.min || 0) - picks.length;
+      const extras = sorted.filter(a => !used.has(a.title) && !picks.includes(a) && a.category === 'allgemein');
+      const fill = extras.slice(0, needed);
+      fill.forEach(f => { f.category = catKey; }); // Umkategorisieren
+      picks = [...picks, ...fill];
+    }
+
+    picks.forEach(p => { selected.push(p); used.add(p.title); });
+  }
+
+  return selected;
+}
+
+// ============================================================
+// DARSTELLUNG
+// ============================================================
+
+function renderNews() {
+  const container = document.getElementById('newsContainer');
+
+  let articles = displayedArticles;
+  if (activeFilter !== 'alle') {
+    articles = articles.filter(a => a.category === activeFilter);
+  }
+
+  if (articles.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">&#128240;</div>
+        <h3>Keine Artikel gefunden</h3>
+        <p>Die News werden geladen oder es gibt keine Artikel in dieser Kategorie.</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Nach Kategorie gruppieren
+  let html = '';
+  const grouped = {};
+  for (const a of articles) {
+    if (!grouped[a.category]) grouped[a.category] = [];
+    grouped[a.category].push(a);
+  }
+
+  const colorMap = {
+    region: 'var(--region)', wirtschaft: 'var(--wirtschaft)', geopolitik: 'var(--geopolitik)',
+    politik: 'var(--politik)', blaulicht: 'var(--blaulicht)', welt: 'var(--welt)',
+    allgemein: 'var(--allgemein)', wissen: 'var(--wissen)'
+  };
+
+  for (const catKey of CATEGORY_ORDER) {
+    if (!grouped[catKey]) continue;
+    const catLabel = CATEGORIES[catKey].label;
+    const catColor = colorMap[catKey] || 'var(--allgemein)';
+    const count = grouped[catKey].length;
+
+    html += `
+      <div class="section-header">
+        <span class="section-dot" style="background: ${catColor}"></span>
+        ${catLabel}
+        <span class="section-count">${count} Artikel</span>
+      </div>
+      <div class="news-grid">
+    `;
+
+    for (const article of grouped[catKey]) {
+      const catClass = `cat-${article.category}`;
+      const timeAgo = getTimeAgo(article.pubDate);
+      const linkUrl = article.link || '#';
+      const { trust, trustLabel } = rateContentTrust(article);
+      const trustDots = '●'.repeat(trust) + '○'.repeat(5 - trust);
+
+      html += `
+        <a class="news-card-link" href="${linkUrl}" target="_blank" rel="noopener">
+          <div class="news-card ${catClass}">
+            <div class="category-stripe"></div>
+            <div class="card-content">
+              <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+                <span class="category-tag" style="margin-bottom:0;">${catLabel}</span>
+                <span class="trust-badge trust-${trust}" title="Vertrauenswürdigkeit: ${trustLabel}">
+                  <span class="trust-dots">${trustDots}</span> ${trustLabel}
+                </span>
+              </div>
+              <h3>${article.title}</h3>
+              <p class="summary">${article.summary || ''}</p>
+              <div class="meta">
+                <span class="source">${article.source}</span>
+                <span>${timeAgo} &#8599;</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      `;
+    }
+
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+}
+
+function getTimeAgo(date) {
+  const diff = Date.now() - date;
+  const min = Math.floor(diff / 60000);
+  const hrs = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (min < 1) return 'Gerade eben';
+  if (min < 60) return `Vor ${min} Min.`;
+  if (hrs < 24) return `Vor ${hrs} Std.`;
+  if (days === 1) return 'Gestern';
+  return `Vor ${days} Tagen`;
+}
+
+// ============================================================
+// AUTO-REFRESH – leise zur vollen und halben Stunde (:00 und :30)
+// ============================================================
+
+function startAutoRefresh() {
+  if (refreshTimer) clearInterval(refreshTimer);
+
+  // Jede Minute prüfen ob :00 oder :30 erreicht ist
+  refreshTimer = setInterval(() => {
+    const min = new Date().getMinutes();
+    if (min === 0 || min === 30) {
+      loadNews();
+      loadWeather();
+      loadSport();
+      loadWissen();
+    }
+  }, 60 * 1000);
+}
+
+function manualRefresh() {
+  loadNews();
+  loadWeather();
+  loadSport();
+  loadWissen();
+}
+
+// ============================================================
+// WETTER – Reinach BL, 10-Tage-Vorhersage (Open-Meteo)
+// ============================================================
+
+async function loadWeather() {
+  const container = document.getElementById('weatherContainer');
+  if (!container) return;
+
+  try {
+    // Reinach BL: 47.4935° N, 7.5891° E
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=47.4935&longitude=7.5891'
+      + '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode,wind_speed_10m_max'
+      + '&timezone=Europe/Zurich&forecast_days=10';
+    const resp = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    const data = await resp.json();
+
+    if (!data.daily) throw new Error('Keine Wetterdaten');
+
+    const days = data.daily.time;
+    const maxTemps = data.daily.temperature_2m_max;
+    const minTemps = data.daily.temperature_2m_min;
+    const precip = data.daily.precipitation_sum;
+    const codes = data.daily.weathercode;
+    const wind = data.daily.wind_speed_10m_max;
+
+    const dayNames = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+    let html = `
+      <div class="section-header">
+        <span class="section-dot" style="background: #38bdf8"></span>
+        Wetter – Reinach BL
+        <span class="section-count">10-Tage-Vorhersage</span>
+      </div>
+      <div class="weather-grid">
+    `;
+
+    for (let i = 0; i < days.length; i++) {
+      const d = new Date(days[i] + 'T12:00:00');
+      const dayName = i === 0 ? 'Heute' : i === 1 ? 'Morgen' : dayNames[d.getDay()];
+      const dateStr = `${d.getDate()}.${d.getMonth() + 1}.`;
+      const icon = weatherIcon(codes[i]);
+      const desc = weatherDescription(codes[i]);
+      const precipVal = precip[i] > 0 ? `${precip[i].toFixed(1)} mm` : '–';
+      const windVal = `${Math.round(wind[i])} km/h`;
+
+      html += `
+        <div class="weather-card">
+          <div class="weather-day">${dayName}</div>
+          <div class="weather-date">${dateStr}</div>
+          <div class="weather-icon">${icon}</div>
+          <div class="weather-desc">${desc}</div>
+          <div class="weather-temps">
+            <span class="temp-max">${Math.round(maxTemps[i])}°</span>
+            <span class="temp-min">${Math.round(minTemps[i])}°</span>
+          </div>
+          <div class="weather-detail">Regen: ${precipVal}</div>
+          <div class="weather-detail">Wind: ${windVal}</div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = `
+      <div class="section-header">
+        <span class="section-dot" style="background: #38bdf8"></span>
+        Wetter – Reinach BL
+      </div>
+      <p style="color:var(--text-muted);padding:16px;">Wetterdaten konnten nicht geladen werden.</p>
+    `;
+  }
+}
+
+function weatherIcon(code) {
+  if (code === 0) return '☀️';
+  if (code <= 3) return '⛅';
+  if (code <= 48) return '🌫️';
+  if (code <= 57) return '🌦️';
+  if (code <= 65) return '🌧️';
+  if (code <= 67) return '🌨️';
+  if (code <= 77) return '❄️';
+  if (code <= 82) return '🌧️';
+  if (code <= 86) return '❄️';
+  if (code <= 99) return '⛈️';
+  return '🌤️';
+}
+
+function weatherDescription(code) {
+  if (code === 0) return 'Klar';
+  if (code <= 2) return 'Teilweise bewölkt';
+  if (code === 3) return 'Bewölkt';
+  if (code <= 48) return 'Nebel';
+  if (code <= 55) return 'Nieselregen';
+  if (code <= 57) return 'Gefrierender Niesel';
+  if (code <= 63) return 'Regen';
+  if (code <= 65) return 'Starker Regen';
+  if (code <= 67) return 'Gefrierender Regen';
+  if (code <= 75) return 'Schneefall';
+  if (code === 77) return 'Schneekörner';
+  if (code <= 82) return 'Regenschauer';
+  if (code <= 86) return 'Schneeschauer';
+  if (code === 95) return 'Gewitter';
+  if (code <= 99) return 'Gewitter mit Hagel';
+  return 'Unbekannt';
+}
+
+// ============================================================
+// SPORT – Schweizer Nati, FC Basel, FC Barcelona, Top-Fussball
+// ============================================================
+
+const SPORT_SOURCES = [
+  { name: 'SRF Sport',    url: 'https://www.srf.ch/sport/bnf/rss/1892',           icon: 'SRF' },
+  { name: 'Blick Fussball', url: 'https://www.blick.ch/sport/fussball/rss.xml',    icon: 'BLK' },
+  { name: '20M Sport',    url: 'https://www.20min.ch/rss/rss.xml',                icon: '20M' },
+  { name: 'Watson Sport',  url: 'https://www.watson.ch/api/1.0/rss/index.xml',     icon: 'WAT' },
+  { name: 'Nau Sport',    url: 'https://www.nau.ch/sport/rss.xml',                icon: 'NAU' },
+  { name: 'Blick Sport',  url: 'https://www.blick.ch/sport/rss.xml',              icon: 'BLK' },
+];
+
+// Subkategorien mit Keywords
+const SPORT_CATS = {
+  nati: {
+    label: 'Schweizer Nati',
+    required: ['nati', 'nationalmannschaft', 'a-nati', 'nati-team', 'länderspiel', 'laenderspiel',
+      'em-quali', 'wm-quali', 'yakin', 'schweiz gegen', 'gegen die schweiz', 'schweiz spielt',
+      'schweiz trifft', 'schweizer nationalelf', 'sfv', 'schweizer auswahl',
+      'xhaka', 'shaqiri', 'sommer', 'embolo', 'akanji', 'ndoye', 'rieder', 'aebischer',
+      'kobel', 'elvedi', 'zakaria', 'zuber', 'okafor', 'steffen'],
+    max: 3
+  },
+  fcbasel: {
+    label: 'FC Basel',
+    required: ['fc basel', 'fcb 1893', 'rotblau', 'st. jakob-park', 'st. jakob park',
+      'super league basel', 'fc basel 1893', 'bebbi'],
+    max: 3
+  },
+  fcbarcelona: {
+    label: 'FC Barcelona',
+    required: ['fc barcelona', 'barça', 'barca', 'camp nou', 'blaugrana',
+      'barcelona fc', 'lamine yamal', 'pedri', 'gavi', 'ter stegen',
+      'lewandowski barcelona', 'raphinha', 'hansi flick barcelona', 'la masia'],
+    max: 3
+  },
+  fussball: {
+    label: 'Fussball Top-News',
+    required: ['fussball', 'champions league', 'europa league', 'conference league',
+      'super league', 'la liga', 'premier league', 'bundesliga', 'serie a', 'ligue 1',
+      'uefa', 'fifa', 'transfermarkt', 'champions-league', 'europa-league',
+      'cl-', 'el-', 'wm 2026', 'em 2028', 'nations league', 'klubweltmeisterschaft',
+      'real madrid', 'manchester city', 'bayern münchen', 'psg', 'juventus',
+      'liverpool', 'arsenal', 'chelsea', 'inter mailand', 'ac mailand',
+      'atletico madrid', 'borussia dortmund', 'bvb', 'young boys', 'yb ',
+      'fc zürich', 'fcz', 'fc luzern', 'fc lugano', 'fc st. gallen', 'servette',
+      'grasshoppers', 'gc ', 'lausanne-sport', 'fc sion', 'fc winterthur'],
+    minMatches: 1,
+    max: 4
+  }
+};
+
+// Ausschlusswörter – kein Frauenfussball
+const SPORT_EXCLUDE = [
+  'frauen', 'frauenfussball', 'frauennati', 'frauen-nati', 'frauen-wm', 'frauen-em',
+  'frauenmannschaft', 'spielerin', 'spielerinnen', 'stürmerin', 'stuermerin',
+  'torhüterin', 'torhueterin', 'trainerin', 'kapitänin', 'kapitaenin',
+  'women', 'ladies', 'w-league', 'frauen-team'
+];
+
+// Breiter Fussball-Kontextcheck
+function isFootballArticle(text) {
+  const footballContext = [
+    // Sportart
+    'fussball', 'fußball',
+    // Ligen & Wettbewerbe
+    'champions league', 'europa league', 'conference league', 'nations league',
+    'super league', 'la liga', 'premier league', 'bundesliga', 'serie a', 'ligue 1',
+    'uefa', 'fifa', 'wm 2026', 'em 2028', 'copa', 'klubweltmeisterschaft',
+    // Teams
+    'fc ', 'fc-', 'nati', 'nationalmannschaft',
+    'barça', 'barca', 'barcelona', 'real madrid', 'bayern',
+    'fc basel', 'young boys', 'fc zürich', 'servette', 'fc lugano',
+    'manchester', 'liverpool', 'arsenal', 'chelsea', 'juventus', 'inter mailand',
+    'psg', 'dortmund', 'bvb',
+    // Spielbegriffe
+    'elfmeter', 'penalty', 'freistoss', 'eckball', 'corner',
+    'halbzeit', 'nachspielzeit', 'anpfiff', 'abpfiff',
+    'gelbe karte', 'rote karte', 'platzverweis',
+    'torschütz', 'torschuetz', 'torhüter', 'torhueter',
+    'stürmer', 'stuermer', 'mittelfeld', 'abwehr', 'verteidiger',
+    'schiedsrichter', 'var',
+    // Strukturen
+    'tabelle', 'meisterschaft', 'pokal', 'cupfinal', 'cup-', 'derby',
+    'aufstieg', 'abstieg', 'relegation', 'playoff',
+    'halbfinal', 'viertelfinal', 'achtelfinale', 'gruppenphase',
+    'rückspiel', 'rueckspiel', 'hinspiel',
+    // Transfer
+    'transfer', 'ablöse', 'abloese', 'verpflichtung', 'leihgeschäft',
+    // Spielernamen (Top-Stars)
+    'mbappe', 'mbappé', 'haaland', 'bellingham', 'vinicius',
+    'lewandowski', 'de bruyne', 'salah', 'messi', 'ronaldo',
+    'xhaka', 'shaqiri', 'sommer', 'akanji', 'embolo', 'ndoye',
+    'lamine yamal', 'pedri', 'gavi'
+  ];
+  return footballContext.some(kw => text.includes(kw));
+}
+
+async function loadSport() {
+  const container = document.getElementById('sportContainer');
+  if (!container) return;
+
+  const results = await Promise.allSettled(SPORT_SOURCES.map(s => fetchFeed(s)));
+  let articles = [];
+  results.forEach(r => {
+    if (r.status === 'fulfilled' && r.value) articles.push(...r.value);
+  });
+
+  // Deduplizieren
+  const seen = new Set();
+  const unique = [];
+  for (const a of articles) {
+    const key = a.title.toLowerCase().replace(/[^a-zäöü0-9]/g, '').substring(0, 50);
+    if (!seen.has(key)) { seen.add(key); unique.push(a); }
+  }
+
+  // Filtern: NUR echte Fussballartikel, KEIN Frauenfussball
+  const footballArticles = unique.filter(a => {
+    const text = (a.title + ' ' + a.summary).toLowerCase();
+    if (SPORT_EXCLUDE.some(ex => text.includes(ex))) return false;
+    return isFootballArticle(text);
+  });
+
+  // Subkategorisieren
+  const used = new Set();
+  const sorted = [...footballArticles].sort((a, b) => b.pubDate - a.pubDate);
+  const sportDisplay = [];
+
+  for (const [key, cat] of Object.entries(SPORT_CATS)) {
+    const matching = sorted.filter(a => {
+      if (used.has(a.title)) return false;
+      const text = (a.title + ' ' + a.summary).toLowerCase();
+      const matches = cat.required.filter(kw => text.includes(kw)).length;
+      const needed = cat.minMatches || 1;
+      return matches >= needed;
+    });
+    const picks = matching.slice(0, cat.max);
+    picks.forEach(p => { sportDisplay.push({ ...p, sportSub: cat.label }); used.add(p.title); });
+  }
+
+  if (sportDisplay.length === 0) {
+    container.innerHTML = `
+      <div class="section-header">
+        <span class="section-dot" style="background: #10b981"></span>
+        Sport – Fussball
+      </div>
+      <p style="color:var(--text-muted);padding:16px;">Aktuell keine Fussball-News verfügbar.</p>
+    `;
+    return;
+  }
+
+  let html = `
+    <div class="section-header">
+      <span class="section-dot" style="background: #10b981"></span>
+      Sport – Fussball
+      <span class="section-count">${sportDisplay.length} Artikel</span>
+    </div>
+    <div class="news-grid">
+  `;
+
+  for (const article of sportDisplay) {
+    const timeAgo = getTimeAgo(article.pubDate);
+    const linkUrl = article.link || '#';
+    const { trust, trustLabel } = rateContentTrust(article);
+    const trustDots = '●'.repeat(trust) + '○'.repeat(5 - trust);
+
+    html += `
+      <a class="news-card-link" href="${linkUrl}" target="_blank" rel="noopener">
+        <div class="news-card cat-sport">
+          <div class="category-stripe"></div>
+          <div class="card-content">
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+              <span class="category-tag" style="background:rgba(16,185,129,0.15);color:#10b981;">${article.sportSub}</span>
+              <span class="trust-badge trust-${trust}" title="Vertrauenswürdigkeit: ${trustLabel}">
+                <span class="trust-dots">${trustDots}</span> ${trustLabel}
+              </span>
+            </div>
+            <h3>${article.title}</h3>
+            <p class="summary">${article.summary || ''}</p>
+            <div class="meta">
+              <span class="source">${article.source}</span>
+              <span>${timeAgo} &#8599;</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// ============================================================
+// WISSEN – spannende Fakten, die man im Alltag selten hört
+// ============================================================
+
+const WISSEN_SOURCES = [
+  { name: 'Spektrum',         url: 'https://www.spektrum.de/alias/rss/spektrum-de-rss-feed/996406', icon: 'SPK' },
+  { name: 'Wissenschaft.de',  url: 'https://www.wissenschaft.de/feed/',                             icon: 'WIS' },
+  { name: 'Scinexx',          url: 'https://www.scinexx.de/feed/',                                  icon: 'SCX' },
+  { name: 'National Geo DE',  url: 'https://www.nationalgeographic.de/feed',                        icon: 'NGO' },
+  { name: 'Heise Wissen',     url: 'https://www.heise.de/newsticker/wissen/atom.xml',               icon: 'HEI' },
+  { name: 'SRF Wissen',       url: 'https://www.srf.ch/wissen/bnf/rss/9197',                       icon: 'SRF' },
+];
+
+// Keywords die auf wirklich spannende, wenig bekannte Inhalte deuten
+const WISSEN_KEYWORDS = [
+  // Entdeckungen & Durchbrüche
+  'entdeckt', 'entdeckung', 'erstmals', 'neu entdeckt', 'durchbruch', 'überraschend',
+  'unerwartet', 'rätselhaft', 'geheimnis', 'phänomen', 'paradox',
+  'uraltes', 'jahrtausende', 'jahrmillionen', 'fossil', 'ausgrabung', 'mumie',
+  // Wissenschaft & Forschung
+  'forscher', 'studie', 'wissenschaftler', 'experiment', 'forschung',
+  'universum', 'weltraum', 'nasa', 'galaxie', 'schwarzes loch', 'dunkle materie',
+  'quantenphysik', 'quantencomputer', 'higgs', 'teilchenbeschleuniger', 'cern',
+  // Natur & Biologie
+  'tier', 'tierart', 'pflanze', 'evolution', 'dna', 'gen', 'genetik', 'zelle',
+  'virus', 'bakterien', 'pilz', 'ökosystem', 'artensterben', 'biodiversität',
+  'migration', 'instinkt', 'intelligenz tiere', 'oktopus', 'wale', 'delfine',
+  // Medizin & Gesundheit (unbekannte Fakten)
+  'impfstoff', 'krebstherapie', 'stammzellen', 'organ', 'neurologie', 'gehirn',
+  'schlaf', 'microbiom', 'placebo', 'immunsystem', 'erbkrankheit',
+  // KI & Technologie
+  'ki ', 'künstliche intelligenz', 'roboter', 'quantencomputer', 'chip', 'halbleiter',
+  'fusion', 'kernfusion', 'wasserstoff', 'solar', 'speicher', 'batterietechnologie',
+  // Geschichte & Archäologie
+  'archäologie', 'antike', 'prähistorisch', 'steinzeit', 'bronze', 'römer',
+  'entschlüsselt', 'schrift', 'handschrift', 'höhlenmalerei', 'pyramide',
+  // Psychologie & Verhalten
+  'psychologie', 'kognition', 'wahrnehmung', 'gedächtnis', 'träume', 'emotion',
+  'verhalten', 'soziale', 'sucht', 'motivation', 'persönlichkeit',
+  // Klima & Erde
+  'klimawandel', 'gletscher', 'ozean', 'tiefsee', 'vulkan', 'erdbeben',
+  'meteroit', 'asteroid', 'eiszeit', 'meeresspiegel',
+  // Faszinierende Fakten / Trivia
+  'überraschend', 'erstaunlich', 'kaum bekannt', 'wusstest du', 'fakt',
+  'mythos', 'irrtum', 'missverständnis', 'warum eigentlich', 'wie funktioniert'
+];
+
+// Wow-Faktor: Wörter die besonders spannende Inhalte signalisieren → Bonus-Punkte
+const WOW_KEYWORDS = [
+  'erstmals', 'nie zuvor', 'revolutionär', 'bahnbrechend', 'weltweit einzigartig',
+  'unerwartet', 'rätselhaft', 'geheimnis gelüftet', 'entschlüsselt', 'überraschend',
+  'erstaunlich', 'faszinierend', 'fossil', 'millionen jahre', 'milliarden jahre',
+  'schwarzes loch', 'quantencomputer', 'kernfusion', 'tiefsee', 'unbekannte art',
+  'neu entdeckt', 'sensation', 'historischer fund', 'durchbruch'
+];
+
+// Ausschluss: Alltägliche News die nichts mit Wissen zu tun haben
+const WISSEN_EXCLUDE = [
+  'aktie', 'börse', 'politik', 'bundesrat', 'wahl', 'partei', 'fussball',
+  'nati', 'transfer', 'unfall', 'brand', 'polizei', 'gericht', 'abstimmung',
+  'krieg', 'militär', 'sanktion', 'inflation', 'zins', 'immobilien'
+];
+
+async function loadWissen() {
+  const container = document.getElementById('wissenContainer');
+  if (!container) return;
+
+  // Eigene Wissen-Quellen laden
+  const results = await Promise.allSettled(WISSEN_SOURCES.map(s => fetchFeed(s)));
+  let articles = [];
+  results.forEach(r => {
+    if (r.status === 'fulfilled' && r.value) articles.push(...r.value);
+  });
+
+  // Auch passende Artikel aus dem Hauptfeed nehmen
+  const fromMain = allArticles.filter(a => {
+    const text = (a.title + ' ' + a.summary).toLowerCase();
+    if (WISSEN_EXCLUDE.some(ex => text.includes(ex))) return false;
+    return WISSEN_KEYWORDS.some(kw => text.includes(kw));
+  });
+  articles.push(...fromMain);
+
+  // Deduplizieren
+  const seen = new Set();
+  const unique = [];
+  for (const a of articles) {
+    const key = a.title.toLowerCase().replace(/[^a-zäöü0-9]/g, '').substring(0, 50);
+    if (!seen.has(key)) { seen.add(key); unique.push(a); }
+  }
+
+  // Ausschluss und Keyword-Filter
+  const filtered = unique.filter(a => {
+    const text = (a.title + ' ' + a.summary).toLowerCase();
+    if (WISSEN_EXCLUDE.some(ex => text.includes(ex))) return false;
+    return WISSEN_KEYWORDS.some(kw => text.includes(kw));
+  });
+
+  // Scoring: Keyword-Treffer + Wow-Bonus
+  const scored = filtered.map(a => {
+    const text = (a.title + ' ' + a.summary).toLowerCase();
+    const kwScore = WISSEN_KEYWORDS.filter(kw => text.includes(kw)).length;
+    const wowBonus = WOW_KEYWORDS.filter(kw => text.includes(kw)).length * 3;
+    return { ...a, wissenScore: kwScore + wowBonus };
+  }).sort((a, b) => {
+    const scoreDiff = b.wissenScore - a.wissenScore;
+    if (scoreDiff !== 0) return scoreDiff;
+    return b.pubDate - a.pubDate;
+  });
+
+  const picks = scored.slice(0, 3);
+
+  if (picks.length === 0) {
+    container.innerHTML = `
+      <div class="section-header">
+        <span class="section-dot" style="background: var(--wissen)"></span>
+        Wissen
+      </div>
+      <p style="color:var(--text-muted);padding:16px;">Aktuell keine Wissen-Artikel verfügbar.</p>
+    `;
+    return;
+  }
+
+  let html = `
+    <div class="section-header">
+      <span class="section-dot" style="background: var(--wissen)"></span>
+      Wissen
+      <span class="section-count">${picks.length} Artikel</span>
+    </div>
+    <div class="news-grid">
+  `;
+
+  for (const article of picks) {
+    const timeAgo = getTimeAgo(article.pubDate);
+    const linkUrl = article.link || '#';
+    const { trust, trustLabel } = rateContentTrust(article);
+    const trustDots = '●'.repeat(trust) + '○'.repeat(5 - trust);
+
+    html += `
+      <a class="news-card-link" href="${linkUrl}" target="_blank" rel="noopener">
+        <div class="news-card cat-wissen">
+          <div class="category-stripe"></div>
+          <div class="card-content">
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+              <span class="category-tag">Wissen</span>
+              <span class="trust-badge trust-${trust}" title="Vertrauenswürdigkeit: ${trustLabel}">
+                <span class="trust-dots">${trustDots}</span> ${trustLabel}
+              </span>
+            </div>
+            <h3>${article.title}</h3>
+            <p class="summary">${article.summary || ''}</p>
+            <div class="meta">
+              <span class="source">${article.source}</span>
+              <span>${timeAgo} &#8599;</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+</script>
+</body>
+</html>
